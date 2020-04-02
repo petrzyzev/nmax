@@ -1,4 +1,3 @@
-# frozen_string_literal: true
 
 require 'nmax/version'
 
@@ -27,7 +26,7 @@ module Nmax
         byte = io.getbyte
         break if byte.nil?
 
-        number = required_bytes[byte]
+        number = REQUIRED_BYTES[byte]
         if number
           result_array.last << number
         else
