@@ -1,4 +1,3 @@
-
 require 'nmax/version'
 
 module Nmax
