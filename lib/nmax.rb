@@ -1,43 +1,25 @@
-
-require 'nmax/version'
+require 'set'
 
 module Nmax
   class Finder
-    REQUIRED_BYTES = { 48 => '0',
-                       49 => '1',
-                       50 => '2',
-                       51 => '3',
-                       52 => '4',
-                       53 => '5',
-                       54 => '6',
-                       55 => '7',
-                       56 => '8',
-                       57 => '9' }.freeze
-    attr_reader :io, :n
+    attr_reader :io, :count
 
-    def initialize(io, n)
+    def initialize(io, count)
       @io = io
-      @n = n
+      @count = count
     end
 
-    def find
-      result_array = ['']
-      loop do
-        byte = io.getbyte
-        break if byte.nil?
-
-        number = REQUIRED_BYTES[byte]
-        if number
-          result_array.last << number
-        else
-          result_array << '' unless result_array.last.empty?
+    def run
+      buffer = ''
+      set = io.each_char.with_object(SortedSet.new) do |char, acc|
+        if char.match?(/\d/)
+          buffer << char
+        elsif !buffer.empty?
+          acc << buffer.to_i
+          buffer.clear
         end
       end
-      result_array.sort_by(&:to_i).reverse[0...n]
-    end
-
-    def find_2
-      io.each_line.with_object([]) { |l, ns| l.scan(/\d+/) { |n| ns << n.to_i } }.uniq.sort.reverse[0...n]
+      set.to_a.last(count)
     end
   end
 end

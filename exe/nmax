@@ -1,9 +1,6 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
 require 'nmax'
 
-if ARGV[1] == '1'
-    puts Nmax::Finder.new($stdin, ARGV[0].to_i).find
-else
-    puts Nmax::Finder.new($stdin, ARGV[0].to_i).find_2
-end
+puts Nmax::Finder.new($stdin, ARGV[0].to_i).run
