@@ -3,4 +3,8 @@
 
 require 'nmax'
 
+unless ARGV[0].match?(/^[1-9]\d*$/)
+  return p 'Argument must be a positive number'
+end
+
 puts Nmax::Finder.new($stdin, ARGV[0].to_i).run
